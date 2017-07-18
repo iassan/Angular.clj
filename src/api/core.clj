@@ -1,7 +1,12 @@
 (ns api.core
-  (:gen-class))
+  (:gen-class)
+  (:require [ring.adapter.jetty :as j]))
+
+(defn handler [request]
+  {:status 200
+   :headers {"Content-type" "text/html"}
+   :body "Hello, World!"})
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (j/run-jetty handler {:port 3000}))
