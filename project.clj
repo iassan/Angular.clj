@@ -4,6 +4,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring/ring-core "1.6.2"]
                  [ring/ring-jetty-adapter "1.6.2"]]
+  :plugins [[lein-shell "0.5.0"]]
+  :prep-tasks [["shell" "ng" "build"]]
   :main ^:skip-aot api.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
