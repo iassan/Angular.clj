@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src/angular",
-      "outDir": "dist",
+      "outDir": "resources/public/app",
       "assets": [
         "assets",
         "favicon.ico"
@@ -32,16 +32,8 @@
   "lint": [
     {
       "project": "src/tsconfig.app.json"
-    },
-    {
-      "project": "src/tsconfig.spec.json"
     }
   ],
-  "test": {
-    "karma": {
-      "config": "./karma.conf.js"
-    }
-  },
   "defaults": {
     "styleExt": "css",
     "component": {}

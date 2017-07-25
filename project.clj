@@ -5,7 +5,7 @@
                  [ring/ring-core "1.6.2"]
                  [ring/ring-jetty-adapter "1.6.2"]]
   :plugins [[lein-shell "0.5.0"]]
-  :prep-tasks [["shell" "ng" "build"]]
+  :prep-tasks [["shell" "ng" "build"] "compile"]
   :main ^:skip-aot api.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
