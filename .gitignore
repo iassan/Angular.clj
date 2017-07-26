@@ -12,4 +12,4 @@ pom.xml.asc
 .idea
 *.iml
 node_modules
-resources/public/app/
+resources/public/

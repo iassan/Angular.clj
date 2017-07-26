@@ -1,7 +1,7 @@
 (ns api.core
   (:gen-class)
-  (:require [ring.adapter.jetty :as j]
-            [ring.middleware.resource :as r]))
+  (:require [ring.adapter.jetty :as jetty]
+            [ring.middleware.resource :as resource]))
 
 (defn handler [request]
   {:status 200
@@ -9,8 +9,8 @@
    :body "Hello, World!"})
 
 (def app
-  (r/wrap-resource handler "public"))
+  (resource/wrap-resource handler "public"))
 
 (defn -main
   [& args]
-  (j/run-jetty app {:port 3000}))
+  (jetty/run-jetty app {:port 3000}))
