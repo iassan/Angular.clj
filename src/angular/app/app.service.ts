@@ -9,8 +9,8 @@ export class AppService {
     }
 
     getMessage(): Promise<string> {
-        return this.http.get("/message")
+        return this.http.get("/json")
             .toPromise()
-            .then(response => response.text());
+            .then(response => response.json().message);
     }
 }

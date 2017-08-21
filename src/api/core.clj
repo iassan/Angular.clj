@@ -2,21 +2,19 @@
   (:gen-class)
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.resource :as resource]
-            [compojure.core :refer :all]))
+            [compojure.core :refer :all]
+            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.util.response :refer :all]))
 
 (defn staticHandler [request]
-  {:status 200
-   :headers {"Content-type" "text/html"}
-   :body "Hello, World!"})
+  (content-type (response "Hello, World!") "text/html"))
 
 (defn jsonHandler [request]
-  {:status 200
-   :headers {"Content-type" "application/json"}
-   :body "{\"message\": \"Hello, JSON!\"}"})
+  (response {:message "Hello, JSON!"}))
 
 (defroutes my-routes
            (GET "/hello" [] staticHandler)
-           (GET "/json" [] jsonHandler))
+           (GET "/json" [] (wrap-json-response jsonHandler)))
 
 (def app
   (resource/wrap-resource my-routes "public"))
