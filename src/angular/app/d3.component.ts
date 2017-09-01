@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import bar from 'britecharts/dist/umd/bar.min.js';
 import colors from 'britecharts/dist/umd/colors.min.js'
+import Plottable from 'plottable/plottable.js'
 
 class Value {
     name: string;
@@ -28,7 +29,12 @@ export class D3Component implements OnInit {
             {name: "e", value: 23},
             {name: "f", value: 42}
         ];
+        this.drawUsingPureD3(data);
+        this.drawUsingBriteCharts(data);
+        this.drawUsingPlottable(data);
+    }
 
+    private drawUsingBriteCharts(data: Value[]) {
         let barChart = new bar();
         let barContainer = d3.select('.chart2');
 
@@ -38,7 +44,9 @@ export class D3Component implements OnInit {
             .height(250);
 
         barContainer.datum(data).call(barChart);
+    }
 
+    private drawUsingPureD3(data: Value[]) {
         const margin = {top: 20, right: 30, bottom: 30, left: 40},
             chartWidth = 500 - margin.left - margin.right,
             chartHeight = 250 - margin.top - margin.bottom;
@@ -76,5 +84,25 @@ export class D3Component implements OnInit {
             .attr("y", d => y(d.value))
             .attr("height", d => chartHeight - y(d.value))
             .attr("width", x.bandwidth());
+    }
+
+    private drawUsingPlottable(data: Value[]) {
+        let xScale = new Plottable.Scales.Category();
+        let yScale = new Plottable.Scales.Linear();
+
+        let xAxis = new Plottable.Axes.Category(xScale, "bottom");
+        let yAxis = new Plottable.Axes.Numeric(yScale, "left");
+
+        let plot = new Plottable.Plots.Bar()
+            .addDataset(new Plottable.Dataset(data))
+            .x(d => d.name, xScale)
+            .y(d => d.value, yScale)
+            .animated(true);
+
+        new Plottable.Components.Table([
+            [yAxis, plot],
+            [null, xAxis]
+        ])
+            .renderTo("div#chart3");
     }
 }
