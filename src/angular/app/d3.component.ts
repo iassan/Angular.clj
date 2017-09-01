@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
+import bar from 'britecharts/dist/umd/bar.min.js';
+import colors from 'britecharts/dist/umd/colors.min.js'
 
 class Value {
     name: string;
@@ -26,6 +28,17 @@ export class D3Component implements OnInit {
             {name: "e", value: 23},
             {name: "f", value: 42}
         ];
+
+        let barChart = new bar();
+        let barContainer = d3.select('.chart2');
+
+        barChart
+            .colorSchema(colors.colorSchemas.britecharts)
+            .width(500)
+            .height(250);
+
+        barContainer.datum(data).call(barChart);
+
         const margin = {top: 20, right: 30, bottom: 30, left: 40},
             chartWidth = 500 - margin.left - margin.right,
             chartHeight = 250 - margin.top - margin.bottom;
@@ -38,7 +51,7 @@ export class D3Component implements OnInit {
             .range([chartHeight, 0])
             .domain([0, d3.max(data, d => d.value)]);
 
-        let chart = d3.select(".chart")
+        let chart = d3.select(".chart1")
             .attr("width", chartWidth + margin.left + margin.right)
             .attr("height", chartHeight + margin.top + margin.bottom)
             .append("g").attr("transform", "translate(" + margin.left + "," + margin.right + ")");

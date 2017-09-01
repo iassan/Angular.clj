@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^4.3.6",
     "@angular/router": "^4.3.6",
     "@types/d3": "^4.10.0",
+    "britecharts": "^2.0.0",
     "core-js": "^2.5.1",
     "d3": "^4.10.0",
     "rxjs": "^5.4.3",
