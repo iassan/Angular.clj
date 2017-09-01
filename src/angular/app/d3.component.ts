@@ -1,6 +1,11 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 
+class Value {
+    name: string;
+    value: number;
+}
+
 @Component({
     selector: 'd3',
     templateUrl: './d3.component.html',
@@ -13,33 +18,50 @@ export class D3Component implements OnInit {
     }
 
     ngOnInit() {
-        const data = [
+        const data: Value[] = [
             {name: "a", value: 4},
             {name: "b", value: 8},
             {name: "c", value: 15},
             {name: "d", value: 16},
             {name: "e", value: 23},
-            {name: "fff", value: 42}
+            {name: "f", value: 42}
         ];
-        const chartWidth = 500,
-            barHeight = 20;
-        let scale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.value)])
-            .range([0, 500]);
+        const margin = {top: 20, right: 30, bottom: 30, left: 40},
+            chartWidth = 500 - margin.left - margin.right,
+            chartHeight = 250 - margin.top - margin.bottom;
+
+        let x = d3.scaleBand()
+            .domain(data.map(d => d.name))
+            .range([0, chartWidth])
+            .padding(.1);
+        let y = d3.scaleLinear()
+            .range([chartHeight, 0])
+            .domain([0, d3.max(data, d => d.value)]);
+
         let chart = d3.select(".chart")
-            .attr("width", chartWidth)
-            .attr("height", barHeight * data.length);
-        let bar = chart.selectAll("g")
+            .attr("width", chartWidth + margin.left + margin.right)
+            .attr("height", chartHeight + margin.top + margin.bottom)
+            .append("g").attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+        chart.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + chartHeight + ")")
+            .call(d3.axisBottom(x));
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(d3.axisLeft(y));
+        chart.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("value");
+        chart.selectAll(".bar")
             .data(data)
-            .enter().append("g")
-            .attr("transform", (d, i) => "translate(0," + i * barHeight + ")");
-        bar.append("rect")
-            .attr("width", d => scale(d.value))
-            .attr("height", barHeight - 1);
-        bar.append("text")
-            .attr("x", d => scale(d.value) - 3)
-            .attr("y", barHeight / 2)
-            .attr("dy", ".35em")
-            .text(d => d.name);
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.name))
+            .attr("y", d => y(d.value))
+            .attr("height", d => chartHeight - y(d.value))
+            .attr("width", x.bandwidth());
     }
 }
