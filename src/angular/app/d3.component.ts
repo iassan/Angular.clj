@@ -93,6 +93,8 @@ export class D3Component implements OnInit {
         let xAxis = new Plottable.Axes.Category(xScale, "bottom");
         let yAxis = new Plottable.Axes.Numeric(yScale, "left");
 
+        let yLabel = new Plottable.Components.AxisLabel("Value", "270");
+
         let plot = new Plottable.Plots.Bar()
             .addDataset(new Plottable.Dataset(data))
             .x(d => d.name, xScale)
@@ -100,8 +102,8 @@ export class D3Component implements OnInit {
             .animated(true);
 
         new Plottable.Components.Table([
-            [yAxis, plot],
-            [null, xAxis]
+            [yLabel, yAxis, plot],
+            [null, null, xAxis]
         ])
             .renderTo("div#chart3");
     }
