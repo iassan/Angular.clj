@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import bar from 'britecharts/dist/umd/bar.min.js';
 import colors from 'britecharts/dist/umd/colors.min.js'
 import Plottable from 'plottable/plottable.js'
+import Chart from 'chart.js/dist/Chart.js'
 
 class Value {
     name: string;
@@ -32,6 +33,22 @@ export class D3Component implements OnInit {
         this.drawUsingPureD3(data);
         this.drawUsingBriteCharts(data);
         this.drawUsingPlottable(data);
+        this.drawUsingChartJs(data);
+    }
+
+    private drawUsingChartJs(data: Value[]) {
+        let ctx = document.getElementById("chart4");
+
+        let chart = new Chart.Bar(ctx, {
+            data: {
+                labels: data.map(d => d.name),
+                datasets: [{
+                    label: 'value',
+                    data: data.map(d => d.value),
+                    backgroundColor: "steelblue",
+                }]
+            }
+        });
     }
 
     private drawUsingBriteCharts(data: Value[]) {
