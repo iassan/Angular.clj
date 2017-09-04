@@ -11,12 +11,12 @@ class Value {
 }
 
 @Component({
-    selector: 'd3',
-    templateUrl: './d3.component.html',
-    styleUrls: ['./d3.component.css'],
+    selector: 'charts',
+    templateUrl: './charts.component.html',
+    styleUrls: ['./charts.component.css'],
     encapsulation: ViewEncapsulation.None,
 })
-export class D3Component implements OnInit {
+export class ChartsComponent implements OnInit {
 
     constructor() {
     }

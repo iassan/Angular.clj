@@ -4,12 +4,12 @@ import {HttpModule} from "@angular/http";
 
 import {AppComponent} from './app.component';
 import {AppService} from "./app.service";
-import {D3Component} from './d3.component';
+import {ChartsComponent} from './charts.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        D3Component,
+        ChartsComponent,
     ],
     imports: [
         BrowserModule,
