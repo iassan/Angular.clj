@@ -7,7 +7,7 @@
                  [ring/ring-json "0.4.0"]
                  [compojure "1.6.0"]]
   :plugins [[lein-shell "0.5.0"]]
-  :prep-tasks [["shell" "npm" "run-script" "build"] "compile"]
   :main ^:skip-aot api.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all
+                       :prep-tasks ["compile" ["shell" "npm" "run-script" "build"]]}})
