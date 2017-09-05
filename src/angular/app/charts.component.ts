@@ -75,12 +75,12 @@ export class ChartsComponent implements OnInit {
 
     private drawUsingBriteCharts(data: TickerValue[]) {
         try {
-            let chart = new line();
+            let chart = line();
             let chartContainer = d3.select('.chart2');
 
             chart.colorSchema(colors.colorSchemas.britecharts)
-                .width(500)
-                .height(250);
+                .width(800)
+                .height(400);
 
             let chartData = {
                 topicName: "bla",
@@ -88,7 +88,7 @@ export class ChartsComponent implements OnInit {
                 dates: data
             };
 
-            chartContainer.datum(chartData).call(chart);
+            chartContainer.datum({dataByTopic: [chartData]}).call(chart);
         } catch (e) {
             console.log(`Problem preparing chart: ${e}`)
         }
@@ -96,8 +96,8 @@ export class ChartsComponent implements OnInit {
 
     private drawUsingPureD3(data: Value[]) {
         const margin = {top: 20, right: 30, bottom: 30, left: 40},
-            chartWidth = 500 - margin.left - margin.right,
-            chartHeight = 250 - margin.top - margin.bottom;
+            chartWidth = 800 - margin.left - margin.right,
+            chartHeight = 400 - margin.top - margin.bottom;
 
         let x = d3.scaleBand()
             .domain(data.map(d => d.name))
