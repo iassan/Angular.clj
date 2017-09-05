@@ -4,11 +4,22 @@ import bar from 'britecharts/dist/umd/bar.min.js';
 import colors from 'britecharts/dist/umd/colors.min.js'
 import Plottable from 'plottable/plottable.js'
 import Chart from 'chart.js/dist/Chart.js'
+import {AppService} from "./app.service";
+import {TickerValue} from "./ticker-value";
 
 class Value {
     name: string;
     value: number;
 }
+
+const data: Value[] = [
+    {name: "a", value: 4},
+    {name: "b", value: 8},
+    {name: "c", value: 15},
+    {name: "d", value: 16},
+    {name: "e", value: 23},
+    {name: "f", value: 42}
+];
 
 @Component({
     selector: 'charts',
@@ -18,21 +29,18 @@ class Value {
 })
 export class ChartsComponent implements OnInit {
 
-    constructor() {
+    constructor(private messageService: AppService) {
     }
 
     ngOnInit() {
-        const data: Value[] = [
-            {name: "a", value: 4},
-            {name: "b", value: 8},
-            {name: "c", value: 15},
-            {name: "d", value: 16},
-            {name: "e", value: 23},
-            {name: "f", value: 42}
-        ];
+        this.messageService.getTickerValues()
+            .then(d => this.drawCharts(d));
+    }
+
+    private drawCharts(tickerData: TickerValue[]) {
         this.drawUsingPureD3(data);
         this.drawUsingBriteCharts(data);
-        this.drawUsingPlottable(data);
+        this.drawUsingPlottable(tickerData);
         this.drawUsingChartJs(data);
     }
 
@@ -103,18 +111,18 @@ export class ChartsComponent implements OnInit {
             .attr("width", x.bandwidth());
     }
 
-    private drawUsingPlottable(data: Value[]) {
-        let xScale = new Plottable.Scales.Category();
+    private drawUsingPlottable(data: TickerValue[]) {
+        let xScale = new Plottable.Scales.Time();
         let yScale = new Plottable.Scales.Linear();
 
-        let xAxis = new Plottable.Axes.Category(xScale, "bottom");
+        let xAxis = new Plottable.Axes.Time(xScale, "bottom");
         let yAxis = new Plottable.Axes.Numeric(yScale, "left");
 
         let yLabel = new Plottable.Components.AxisLabel("Value", "270");
 
-        let plot = new Plottable.Plots.Bar()
+        let plot = new Plottable.Plots.Line()
             .addDataset(new Plottable.Dataset(data))
-            .x(d => d.name, xScale)
+            .x(d => d.date, xScale)
             .y(d => d.value, yScale)
             .animated(true);
 
