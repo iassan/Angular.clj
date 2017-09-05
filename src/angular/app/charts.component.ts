@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
-import bar from 'britecharts/dist/umd/bar.min.js';
+import line from 'britecharts/dist/umd/line.min.js';
 import colors from 'britecharts/dist/umd/colors.min.js'
 import Plottable from 'plottable/plottable.js'
-import Chart from 'chart.js/dist/Chart.js'
+import Chart from 'chart.js/dist/Chart.bundle.js'
 import {AppService} from "./app.service";
 import {TickerValue} from "./ticker-value";
 
@@ -39,36 +39,59 @@ export class ChartsComponent implements OnInit {
 
     private drawCharts(tickerData: TickerValue[]) {
         this.drawUsingPureD3(data);
-        this.drawUsingBriteCharts(data);
+        this.drawUsingBriteCharts(tickerData);
         this.drawUsingPlottable(tickerData);
-        this.drawUsingChartJs(data);
+        this.drawUsingChartJs(tickerData);
     }
 
-    private drawUsingChartJs(data: Value[]) {
+    private drawUsingChartJs(data: TickerValue[]) {
         let ctx = document.getElementById("chart4");
 
-        let chart = new Chart.Bar(ctx, {
+        let chart = new Chart.Line(ctx, {
             data: {
-                labels: data.map(d => d.name),
                 datasets: [{
-                    label: 'value',
-                    data: data.map(d => d.value),
+                    label: 'ticker',
+                    data: data.map(d => {return {x: d.date, y: d.value}}),
+                    borderColor: "steelblue",
                     backgroundColor: "steelblue",
+                    lineTension: 0,
+                    fill: false,
+                    pointRadius: 0,
+                    pointHitRadius: 3,
                 }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                    }]
+                }
             }
         });
     }
 
-    private drawUsingBriteCharts(data: Value[]) {
-        let barChart = new bar();
-        let barContainer = d3.select('.chart2');
+    private drawUsingBriteCharts(data: TickerValue[]) {
+        try {
+            let chart = new line();
+            let chartContainer = d3.select('.chart2');
 
-        barChart
-            .colorSchema(colors.colorSchemas.britecharts)
-            .width(500)
-            .height(250);
+            chart.colorSchema(colors.colorSchemas.britecharts)
+                .width(500)
+                .height(250);
 
-        barContainer.datum(data).call(barChart);
+            let chartData = {
+                topicName: "bla",
+                topic: 123,
+                dates: data
+            };
+
+            chartContainer.datum(chartData).call(chart);
+        } catch (e) {
+            console.log(`Problem preparing chart: ${e}`)
+        }
     }
 
     private drawUsingPureD3(data: Value[]) {
