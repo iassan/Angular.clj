@@ -45,7 +45,7 @@ export class ChartsComponent implements OnInit {
     }
 
     private drawUsingChartJs(data: TickerValue[]) {
-        let ctx = document.getElementById("chart4");
+        let ctx = document.getElementById("myChartJSChart");
 
         let chart = new Chart.Line(ctx, {
             data: {
@@ -76,7 +76,7 @@ export class ChartsComponent implements OnInit {
     private drawUsingBriteCharts(data: TickerValue[]) {
         try {
             let chart = line();
-            let chartContainer = d3.select('.chart2');
+            let chartContainer = d3.select('div#myBriteChartsChart');
 
             chart.colorSchema(colors.colorSchemas.britecharts)
                 .width(800)
@@ -107,7 +107,7 @@ export class ChartsComponent implements OnInit {
             .range([chartHeight, 0])
             .domain([0, d3.max(data, d => d.value)]);
 
-        let chart = d3.select(".chart1")
+        let chart = d3.select("#myPureD3Chart")
             .attr("width", chartWidth + margin.left + margin.right)
             .attr("height", chartHeight + margin.top + margin.bottom)
             .append("g").attr("transform", "translate(" + margin.left + "," + margin.right + ")");
@@ -153,6 +153,6 @@ export class ChartsComponent implements OnInit {
             [yLabel, yAxis, plot],
             [null, null, xAxis]
         ])
-            .renderTo("div#chart3");
+            .renderTo("div#myPlottableChart");
     }
 }

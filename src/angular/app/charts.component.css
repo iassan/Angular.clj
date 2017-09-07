@@ -1,13 +1,13 @@
-.chart1 rect {
+#myPureD3Chart rect {
     fill: steelblue;
 }
 
-#chart3 {
+#myPlottableChart {
     width: 800px;
     height: 400px;
 }
 
-.chart4 {
+#myChartJSChart {
     width: 800px;
     height: 400px;
 }
