@@ -1,7 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
-import line from 'britecharts/dist/umd/line.min.js';
-import colors from 'britecharts/dist/umd/colors.min.js'
 import Plottable from 'plottable/plottable.js'
 import Chart from 'chart.js/dist/Chart.bundle.js'
 import {AppService} from "./app.service";
@@ -39,15 +37,13 @@ export class ChartsComponent implements OnInit {
 
     private drawCharts(tickerData: TickerValue[]) {
         this.drawUsingPureD3(data);
-        this.drawUsingBriteCharts(tickerData);
         this.drawUsingPlottable(tickerData);
         this.drawUsingChartJs(tickerData);
     }
 
     private drawUsingChartJs(data: TickerValue[]) {
         let ctx = document.getElementById("myChartJSChart");
-
-        let chart = new Chart.Line(ctx, {
+        new Chart.Line(ctx, {
             data: {
                 datasets: [{
                     label: 'ticker',
@@ -71,27 +67,6 @@ export class ChartsComponent implements OnInit {
                 }
             }
         });
-    }
-
-    private drawUsingBriteCharts(data: TickerValue[]) {
-        try {
-            let chart = line();
-            let chartContainer = d3.select('div#myBriteChartsChart');
-
-            chart.colorSchema(colors.colorSchemas.britecharts)
-                .width(800)
-                .height(400);
-
-            let chartData = {
-                topicName: "bla",
-                topic: 123,
-                dates: data
-            };
-
-            chartContainer.datum({dataByTopic: [chartData]}).call(chart);
-        } catch (e) {
-            console.log(`Problem preparing chart: ${e}`)
-        }
     }
 
     private drawUsingPureD3(data: Value[]) {
