@@ -2,12 +2,7 @@
     fill: steelblue;
 }
 
-#myPlottableChart {
-    width: 800px;
-    height: 400px;
-}
-
-#myChartJSChart {
+#myPlottableChart, #myChartJSChart, #myVegaLiteChart {
     width: 800px;
     height: 400px;
 }

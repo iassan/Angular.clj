@@ -4,6 +4,8 @@ import Plottable from 'plottable/plottable.js'
 import Chart from 'chart.js/dist/Chart.bundle.js'
 import {AppService} from "./app.service";
 import {TickerValue} from "./ticker-value";
+import * as vega from 'vega/build/vega.js';
+import * as vl from 'vega-lite/build/vega-lite.js';
 
 @Component({
     selector: 'charts',
@@ -25,6 +27,7 @@ export class ChartsComponent implements OnInit {
         ChartsComponent.drawUsingPureD3(tickerData);
         ChartsComponent.drawUsingPlottable(tickerData);
         ChartsComponent.drawUsingChartJs(tickerData);
+        ChartsComponent.drawUsingVegaLite(tickerData);
     }
 
     private static drawUsingChartJs(data: TickerValue[]) {
@@ -118,5 +121,27 @@ export class ChartsComponent implements OnInit {
             [null, null, xAxis]
         ])
             .renderTo("div#myPlottableChart");
+    }
+
+    private static drawUsingVegaLite(data: TickerValue[]) {
+        let vegaLiteSpec = {
+            $schema: "https://vega.github.io/schema/vega-lite/v2.json",
+            width: 739,
+            height: 297,
+            description: "sth",
+            data: {values: data},
+            mark: "line",
+            encoding: {
+                x: {field: "date", type: "temporal", timeUnit: "yearmonthdate", axis: {title: "x"}},
+                y: {field: "value", type: "quantitative", scale: {type: "linear", domain: d3.extent(data, d => d.value)}}
+            }
+        };
+        let vegaSpec = vl.compile(vegaLiteSpec).spec;
+        console.log(vegaSpec);
+        new vega.View(vega.parse(vegaSpec))
+            .renderer("canvas")
+            .initialize("#myVegaLiteChart")
+            .hover()
+            .run();
     }
 }

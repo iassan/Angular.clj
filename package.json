@@ -28,6 +28,9 @@
     "d3": "^4.10.0",
     "plottable": "^3.5.2",
     "rxjs": "^5.4.3",
+    "vega": "^3.0.2",
+    "vega-embed": "^3.0.0-beta.20",
+    "vega-lite": "^2.0.0-rc1",
     "zone.js": "^0.8.17"
   },
   "devDependencies": {
